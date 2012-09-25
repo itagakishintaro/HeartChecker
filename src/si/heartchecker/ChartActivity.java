@@ -21,9 +21,9 @@ import android.os.Bundle;
 import android.view.View;
 
 public class ChartActivity extends Activity {
-	ArrayList<String> heartList = new ArrayList<String>();
-	CreateHeartLogHelper helper = null;
-	HeartLogDAO heartLogDAO = null;
+	private ArrayList<String> heartList = new ArrayList<String>();
+	private CreateHeartLogHelper helper = null;
+	private HeartLogDAO heartLogDAO = null;
 
 	@Override
     public final void onCreate(final Bundle savedInstanceState) {

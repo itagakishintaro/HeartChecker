@@ -42,13 +42,13 @@ public class HeartLogDAO {
 		}
 	}
 
-	public final int countHeart(final String heartType){
+	public final int countHeart(final String heartType) {
 		try {
 			db = helper.getWritableDatabase();
 			String columns[] = new String[] {"Time", "HeartType"};
 			String where = "HeartType=?";
 			Cursor cursor = db.query("HeartLog", columns, where,
-					new String[] { heartType }, null, null, null);
+					new String[] {heartType}, null, null, null);
 
 			return cursor.getCount();
 
@@ -63,7 +63,7 @@ public class HeartLogDAO {
 	public final int countHeartInDate(final String heartType, final String date) {
 		try {
 			db = helper.getWritableDatabase();
-			String[] columns = new String[] { "Time", "HeartType" };
+			String[] columns = new String[] {"Time", "HeartType"};
 			String where = "HeartType=? AND Time LIKE ? || '%'";
 			Cursor cursor = db.query("HeartLog", columns, where, new String[] {
 					heartType, date }, null, null, null);
