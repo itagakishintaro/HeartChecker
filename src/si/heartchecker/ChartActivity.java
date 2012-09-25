@@ -29,7 +29,7 @@ public class ChartActivity extends Activity {
     public final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setup();
-		// �O���t�\��
+		// 週チャート表示
 		viewWeekChart();
 	}
 
