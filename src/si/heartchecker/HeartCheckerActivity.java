@@ -60,7 +60,10 @@ public class HeartCheckerActivity extends Activity {
             heartCountView = (TextView) findViewById(R.id.angry_count);
         } else if (heartType.equals("DOKIDOKI")) {
             heartCountView = (TextView) findViewById(R.id.dokidoki_count);
+        } else {
+            throw new IllegalArgumentException();
         }
+
         // view
         Date date = new Date();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
