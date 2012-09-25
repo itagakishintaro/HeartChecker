@@ -16,12 +16,12 @@ public class HeartLogDAO {
 	private HeartLogDAO() {
 	}
 
-	public HeartLogDAO(CreateHeartLogHelper helper) {
+	public HeartLogDAO(final CreateHeartLogHelper helper) {
 		this.helper = helper;
 	}
 
 	// insert data
-	public void recordHeart(String heartType) {
+	public final void recordHeart(final String heartType) {
 		try {
 			db = helper.getWritableDatabase();
 			db.beginTransaction();
@@ -42,10 +42,10 @@ public class HeartLogDAO {
 		}
 	}
 
-	public int countHeart(String heartType) {
+	public final int countHeart(final String heartType){
 		try {
 			db = helper.getWritableDatabase();
-			String columns[] = new String[] { "Time", "HeartType" };
+			String columns[] = new String[] {"Time", "HeartType"};
 			String where = "HeartType=?";
 			Cursor cursor = db.query("HeartLog", columns, where,
 					new String[] { heartType }, null, null, null);
@@ -60,10 +60,10 @@ public class HeartLogDAO {
 		}
 	}
 
-	public int countHeartInDate(String heartType, String date) {
+	public final int countHeartInDate(final String heartType, final String date) {
 		try {
 			db = helper.getWritableDatabase();
-			String columns[] = new String[] { "Time", "HeartType" };
+			String[] columns = new String[] { "Time", "HeartType" };
 			String where = "HeartType=? AND Time LIKE ? || '%'";
 			Cursor cursor = db.query("HeartLog", columns, where, new String[] {
 					heartType, date }, null, null, null);

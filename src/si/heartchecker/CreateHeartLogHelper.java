@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class CreateHeartLogHelper extends SQLiteOpenHelper {
-	public CreateHeartLogHelper(Context context) {
+	public CreateHeartLogHelper(final Context context) {
 		super(context, "HertLog", null, 1);
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {
+    public final void onCreate(final SQLiteDatabase db) {
 		try {
 			String sql = "create table HeartLog(" + "Time text primary key,"
 					+ "HeartType text not null)";
@@ -23,7 +23,7 @@ public class CreateHeartLogHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 		// TODO Auto-generated method stub
 	}
 }

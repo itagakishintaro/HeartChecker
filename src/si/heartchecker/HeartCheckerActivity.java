@@ -16,7 +16,7 @@ public class HeartCheckerActivity extends Activity {
 	CreateHeartLogHelper helper = null;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
@@ -31,7 +31,7 @@ public class HeartCheckerActivity extends Activity {
 		viewHeartCount("DOKIDOKI");
 	}
 
-	public void onHeartButtonClick(View v) {
+	public final void onHeartButtonClick(final View v) {
 		Button clickedButton = (Button) v;
 		String heartType = (String) clickedButton.getText();
 
@@ -42,13 +42,13 @@ public class HeartCheckerActivity extends Activity {
 		viewHeartCount(heartType);
 	}
 
-	public void onGraphButtonClick(View v) {
+	public final void onGraphButtonClick(final View v) {
 		Intent intent = new Intent(HeartCheckerActivity.this, ChartActivity.class);
 		startActivity(intent);
 	}
 
 	// view heart count
-	public void viewHeartCount(String heartType) {
+	public final void viewHeartCount(final String heartType) {
 		// set TextView
 		TextView heartCountView = null;
 		if (heartType.equals("HAPPY")) {

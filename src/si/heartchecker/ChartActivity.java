@@ -26,17 +26,17 @@ public class ChartActivity extends Activity {
 	HeartLogDAO heartLogDAO = null;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setup();
-		// ƒOƒ‰ƒt•\¦
+		// ï¿½Oï¿½ï¿½ï¿½tï¿½\ï¿½ï¿½
 		viewWeekChart();
 	}
 
-	private void setup(){
+	private void setup() {
 		setContentView(R.layout.chart);
 
-		// Heart Typeİ’è
+		// Heart Typeï¿½İ’ï¿½
 		heartList.add("HAPPY");
 		heartList.add("SAD");
 		heartList.add("ANGRY");
@@ -46,27 +46,27 @@ public class ChartActivity extends Activity {
 		helper = new CreateHeartLogHelper(ChartActivity.this);
 		heartLogDAO = new HeartLogDAO(helper);
 	}
-	
-	public void onWeekChartButtonClick(View v){
+
+	public final void onWeekChartButtonClick(final View v) {
 		setup();
 		viewWeekChart();
 	}
-	
-	public void onMonthChartButtonClick(View v){
+
+	public final void onMonthChartButtonClick(final View v) {
 		setup();
 		viewMonthChart();
 	}
-	
-	public void onTopBackButtonClick(View v){
+
+	public final void onTopBackButtonClick(final View v) {
 		Intent intent = new Intent(ChartActivity.this, HeartCheckerActivity.class);
 		startActivity(intent);
 	}
-	
+
 	private void viewWeekChart() {
 		Calendar calendar = Calendar.getInstance();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-		// —j“ú‚²‚Æ‚Ì“ú•t
+		// ï¿½jï¿½ï¿½Æ‚Ì“ï¿½t
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		String sunday = df.format(calendar.getTime());
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -82,7 +82,7 @@ public class ChartActivity extends Activity {
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 		String saturday = df.format(calendar.getTime());
 
-		// ƒOƒ‰ƒt‚É‚·‚éƒf[ƒ^‚Ìì¬
+		// ï¿½Oï¿½ï¿½ï¿½tï¿½É‚ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Ìì¬
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for (String heartType : heartList) {
 			dataset.addValue(heartLogDAO.countHeartInDate(heartType, sunday),
@@ -102,7 +102,7 @@ public class ChartActivity extends Activity {
 					heartType, "Sat");
 		}
 
-		// AFreeChart‚Ìì¬
+		// AFreeChartï¿½Ìì¬
 		viewChart("Week Graph", "Day", "Points", dataset,
 				PlotOrientation.VERTICAL, true, false, false);
 	}
@@ -114,7 +114,7 @@ public class ChartActivity extends Activity {
 		String yearMonth = df.format(date);
 		int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-		// ƒOƒ‰ƒt‚É‚·‚éƒf[ƒ^‚Ìì¬
+		// ï¿½Oï¿½ï¿½ï¿½tï¿½É‚ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Ìì¬
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for (int i = 1; i <= lastDay; i++) {
 			for (String heartType : heartList) {
@@ -125,25 +125,25 @@ public class ChartActivity extends Activity {
 			}
 		}
 
-		// AFreeChart‚Ìì¬
+		// AFreeChartï¿½Ìì¬
 		viewChart("Month Graph", "Day", "Points", dataset,
 				PlotOrientation.VERTICAL, true, false, false);
 	}
 
-	private void viewChart(String title, String xTitle, String yTitle,
-			DefaultCategoryDataset dataset, PlotOrientation plotOrientation,
-			boolean example, boolean tooltip, boolean url) {
+	private void viewChart(final String title, final String xTitle, final String yTitle,
+			final DefaultCategoryDataset dataset, final PlotOrientation plotOrientation,
+			final boolean example, final boolean tooltip, final boolean url) {
 
 		AFreeChart chart = ChartFactory.createLineChart(title, xTitle, yTitle,
 				dataset, plotOrientation, example, tooltip, url);
 
-		// ‚˜²‚Ì–¼Ì•\¦‚ğŒX‚¯‚é
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ì–ï¿½ï¿½Ì•\ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
 		final CategoryPlot plot = chart.getCategoryPlot();
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions
 				.createUpRotationLabelPositions(-Math.PI / 6.0));
 
-		// •\¦
+		// ï¿½\ï¿½ï¿½
 		ChartView chartview = (ChartView) findViewById(R.id.chart_view);
 		chartview.setChart(chart);
 	}

@@ -12,18 +12,18 @@ public class ChartView extends View {
 
 	private AFreeChart chart;
 
-	public ChartView(Context context, AttributeSet attributeSet) {
+	public ChartView(final Context context, final AttributeSet attributeSet) {
 		super(context, attributeSet);
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
+    protected final void onDraw(final Canvas canvas) {
 		super.onDraw(canvas);
 		RectShape chartArea = new RectShape(0.0, 0.0, 450.0, 450.0);
 		this.chart.draw(canvas, chartArea);
 	}
 
-	public void setChart(AFreeChart chart) {
+	public final void setChart(final AFreeChart chart) {
 		this.chart = chart;
 	}
 
