@@ -2,7 +2,6 @@ package si.heartchecker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,7 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class ChartActivity extends Activity {
-    private ArrayList<String> heartList = new ArrayList<String>();
+//    private ArrayList<String> heartList = new ArrayList<String>();
     private CreateHeartLogHelper helper = null;
     private HeartLogDAO heartLogDAO = null;
 
@@ -37,10 +36,10 @@ public class ChartActivity extends Activity {
         setContentView(R.layout.chart);
 
         // Heart Type�ݒ�
-        heartList.add("HAPPY");
-        heartList.add("SAD");
-        heartList.add("ANGRY");
-        heartList.add("DOKIDOKI");
+//        heartList.add("HAPPY");
+//        heartList.add("SAD");
+//        heartList.add("ANGRY");
+//        heartList.add("DOKIDOKI");
 
         // DB
         helper = new CreateHeartLogHelper(ChartActivity.this);
@@ -85,20 +84,20 @@ public class ChartActivity extends Activity {
 
         // HeartType、曜日ごとのカウント設定
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (String heartType : heartList) {
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, sunday),
+        for (HeartTypes heartType : HeartTypes.values()) {
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), sunday),
                     heartType, "Sun");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, monday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), monday),
                     heartType, "Mon");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, tuesday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), tuesday),
                     heartType, "Tue");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, wednesday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), wednesday),
                     heartType, "Wed");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, thursday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), thursday),
                     heartType, "Thu");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, friday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), friday),
                     heartType, "Fri");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType, saturday),
+            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), saturday),
                     heartType, "Sat");
         }
 
@@ -116,10 +115,10 @@ public class ChartActivity extends Activity {
         // �O���t�ɂ���f�[�^�̍쐬
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 1; i <= lastDay; i++) {
-            for (String heartType : heartList) {
+            for (HeartTypes heartType : HeartTypes.values()) {
                 dataset.addValue(
-                        heartLogDAO.countHeartInDate(heartType, yearMonth
-                                + String.format("%02d", i)), heartType,
+                        heartLogDAO.countHeartInDate(heartType.toString(), yearMonth
+                                + String.format("%02d", i)), heartType.toString(),
                         String.valueOf(i));
             }
         }

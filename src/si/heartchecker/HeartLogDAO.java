@@ -12,8 +12,7 @@ public class HeartLogDAO {
     CreateHeartLogHelper helper = null;
     SQLiteDatabase db = null;
 
-    @SuppressWarnings("unused")
-    private HeartLogDAO() {
+    public HeartLogDAO() {
     }
 
     public HeartLogDAO(final CreateHeartLogHelper helper) {

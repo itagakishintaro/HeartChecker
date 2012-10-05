@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class HeartCheckerActivity extends Activity {
-    HeartLogDAO heartLogDAO = null;
+    public HeartLogDAO heartLogDAO = null;
     CreateHeartLogHelper helper = null;
 
     @Override
@@ -25,10 +25,9 @@ public class HeartCheckerActivity extends Activity {
         heartLogDAO = new HeartLogDAO(helper);
 
         // view heart count
-        viewHeartCount("HAPPY");
-        viewHeartCount("SAD");
-        viewHeartCount("ANGRY");
-        viewHeartCount("DOKIDOKI");
+        for (HeartTypes heartType : HeartTypes.values()) {
+            viewHeartCount(heartType.toString());
+        }
     }
 
     public final void onHeartButtonClick(final View v) {
