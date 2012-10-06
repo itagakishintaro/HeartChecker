@@ -12,9 +12,6 @@ public class HeartLogDAO {
     CreateHeartLogHelper helper = null;
     SQLiteDatabase db = null;
 
-    public HeartLogDAO() {
-    }
-
     public HeartLogDAO(final CreateHeartLogHelper helper) {
         this.helper = helper;
     }
