@@ -38,7 +38,7 @@ public class HeartLogDAO {
         }
     }
 
-    // heartTypeのカウント
+    // heartTypeのTap数を取得
     public final int countHeart(final String heartType) {
         try {
             db = helper.getWritableDatabase();
