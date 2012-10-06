@@ -38,6 +38,7 @@ public class HeartLogDAO {
         }
     }
 
+    // heartTypeのカウント
     public final int countHeart(final String heartType) {
         try {
             db = helper.getWritableDatabase();
