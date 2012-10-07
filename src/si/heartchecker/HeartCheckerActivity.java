@@ -6,23 +6,21 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class HeartCheckerActivity extends Activity {
-    public HeartLogDAO heartLogDAO = null;
-    CreateHeartLogHelper helper = null;
+    private CreateHeartLogHelper helper = null;
 
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // DB
         helper = new CreateHeartLogHelper(HeartCheckerActivity.this);
-        heartLogDAO = new HeartLogDAO(helper);
 
         // view heart count
         for (HeartTypes heartType : HeartTypes.values()) {
@@ -35,7 +33,16 @@ public class HeartCheckerActivity extends Activity {
         String heartType = (String) clickedButton.getText();
 
         // insert
-        heartLogDAO.recordHeart(heartType);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        HeartLogDAO heartLogDAO = new HeartLogDAO(db);
+        try {
+            db.beginTransaction();
+            heartLogDAO.recordHeart(heartType);
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } finally {
+            db.close();
+        }
 
         // view heart count
         viewHeartCount(heartType);
@@ -66,8 +73,15 @@ public class HeartCheckerActivity extends Activity {
         // view
         Date date = new Date();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        heartCountView.setText(String.valueOf(heartLogDAO.countHeartInDate(
-                heartType, df.format(date))));
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+        HeartLogDAO heartLogDAO = new HeartLogDAO(db);
+        try {
+            heartCountView.setText(String.valueOf(heartLogDAO.countHeartInDate(
+                    heartType, df.format(date))));
+        } finally {
+            db.close();
+        }
     }
 
 }

@@ -16,13 +16,12 @@ import org.afree.data.category.DefaultCategoryDataset;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 
 public class ChartActivity extends Activity {
-//    private ArrayList<String> heartList = new ArrayList<String>();
     private CreateHeartLogHelper helper = null;
-    private HeartLogDAO heartLogDAO = null;
 
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
@@ -34,16 +33,7 @@ public class ChartActivity extends Activity {
 
     private void setup() {
         setContentView(R.layout.chart);
-
-        // Heart Type�ݒ�
-//        heartList.add("HAPPY");
-//        heartList.add("SAD");
-//        heartList.add("ANGRY");
-//        heartList.add("DOKIDOKI");
-
-        // DB
         helper = new CreateHeartLogHelper(ChartActivity.this);
-        heartLogDAO = new HeartLogDAO(helper);
     }
 
     public final void onWeekChartButtonClick(final View v) {
@@ -84,21 +74,27 @@ public class ChartActivity extends Activity {
 
         // HeartType、曜日ごとのカウント設定
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (HeartTypes heartType : HeartTypes.values()) {
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), sunday),
-                    heartType, "Sun");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), monday),
-                    heartType, "Mon");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), tuesday),
-                    heartType, "Tue");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), wednesday),
-                    heartType, "Wed");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), thursday),
-                    heartType, "Thu");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), friday),
-                    heartType, "Fri");
-            dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), saturday),
-                    heartType, "Sat");
+        SQLiteDatabase db = helper.getReadableDatabase();
+        HeartLogDAO heartLogDAO = new HeartLogDAO(db);
+        try{
+            for (HeartTypes heartType : HeartTypes.values()) {
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), sunday),
+                        heartType, "Sun");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), monday),
+                        heartType, "Mon");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), tuesday),
+                        heartType, "Tue");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), wednesday),
+                        heartType, "Wed");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), thursday),
+                        heartType, "Thu");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), friday),
+                        heartType, "Fri");
+                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), saturday),
+                        heartType, "Sat");
+            }
+        }finally{
+            db.close();
         }
 
         viewChart("Week Graph", "Day", "Points", dataset,
@@ -112,18 +108,24 @@ public class ChartActivity extends Activity {
         String yearMonth = df.format(date);
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        // �O���t�ɂ���f�[�^�̍쐬
+        // 日、heartTypeごとにカウント
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (int i = 1; i <= lastDay; i++) {
-            for (HeartTypes heartType : HeartTypes.values()) {
-                dataset.addValue(
-                        heartLogDAO.countHeartInDate(heartType.toString(), yearMonth
-                                + String.format("%02d", i)), heartType.toString(),
-                        String.valueOf(i));
+        SQLiteDatabase db = helper.getReadableDatabase();
+        HeartLogDAO heartLogDAO = new HeartLogDAO(db);
+        try{
+            for (int i = 1; i <= lastDay; i++) {
+                for (HeartTypes heartType : HeartTypes.values()) {
+                    dataset.addValue(
+                            heartLogDAO.countHeartInDate(heartType.toString(), yearMonth
+                                    + String.format("%02d", i)), heartType.toString(),
+                            String.valueOf(i));
+                }
             }
+        }finally{
+            db.close();
         }
 
-        // AFreeChart�̍쐬
+        // AFreeChartでグラフ表示
         viewChart("Month Graph", "Day", "Points", dataset,
                 PlotOrientation.VERTICAL, true, false, false);
     }
@@ -136,13 +138,12 @@ public class ChartActivity extends Activity {
         AFreeChart chart = ChartFactory.createLineChart(title, xTitle, yTitle,
                 dataset, plotOrientation, example, tooltip, url);
 
-        // �����̖��̕\�����X����
         final CategoryPlot plot = chart.getCategoryPlot();
         final CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions
                 .createUpRotationLabelPositions(-Math.PI / 6.0));
 
-        // �\��
+        // グラフを表示
         ChartView chartview = (ChartView) findViewById(R.id.chart_view);
         chartview.setChart(chart);
     }
