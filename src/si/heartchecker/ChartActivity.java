@@ -23,6 +23,7 @@ import android.view.View;
 public class ChartActivity extends Activity {
     private CreateHeartLogHelper helper = null;
 
+
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,24 +77,24 @@ public class ChartActivity extends Activity {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         SQLiteDatabase db = helper.getReadableDatabase();
         HeartLogDAO heartLogDAO = new HeartLogDAO(db);
-        try{
+        try {
             for (HeartTypes heartType : HeartTypes.values()) {
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), sunday),
-                        heartType, "Sun");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), monday),
-                        heartType, "Mon");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), tuesday),
-                        heartType, "Tue");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), wednesday),
-                        heartType, "Wed");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), thursday),
-                        heartType, "Thu");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), friday),
-                        heartType, "Fri");
-                dataset.addValue(heartLogDAO.countHeartInDate(heartType.toString(), saturday),
-                        heartType, "Sat");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), sunday), heartType, "Sun");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), monday), heartType, "Mon");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), tuesday), heartType, "Tue");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), wednesday), heartType, "Wed");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), thursday), heartType, "Thu");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), friday), heartType, "Fri");
+                dataset.addValue(heartLogDAO.countHeartInDate(
+                        heartType.toString(), saturday), heartType, "Sat");
             }
-        }finally{
+        } finally {
             db.close();
         }
 
@@ -112,16 +113,16 @@ public class ChartActivity extends Activity {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         SQLiteDatabase db = helper.getReadableDatabase();
         HeartLogDAO heartLogDAO = new HeartLogDAO(db);
-        try{
+        try {
             for (int i = 1; i <= lastDay; i++) {
                 for (HeartTypes heartType : HeartTypes.values()) {
-                    dataset.addValue(
-                            heartLogDAO.countHeartInDate(heartType.toString(), yearMonth
-                                    + String.format("%02d", i)), heartType.toString(),
-                            String.valueOf(i));
+                    dataset.addValue(heartLogDAO.countHeartInDate(
+                            heartType.toString(),
+                            yearMonth + String.format("%02d", i)), heartType
+                            .toString(), String.valueOf(i));
                 }
             }
-        }finally{
+        } finally {
             db.close();
         }
 
@@ -140,8 +141,9 @@ public class ChartActivity extends Activity {
 
         final CategoryPlot plot = chart.getCategoryPlot();
         final CategoryAxis domainAxis = plot.getDomainAxis();
+        final double angle = -Math.PI / 6.0;
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions
-                .createUpRotationLabelPositions(-Math.PI / 6.0));
+                .createUpRotationLabelPositions(angle));
 
         // グラフを表示
         ChartView chartview = (ChartView) findViewById(R.id.chart_view);

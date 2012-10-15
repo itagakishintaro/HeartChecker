@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class HeartLogDAO {
-    SQLiteDatabase db = null;
+    private SQLiteDatabase db = null;
 
     public HeartLogDAO(final SQLiteDatabase db) {
         this.db = db;
@@ -32,7 +32,7 @@ public class HeartLogDAO {
     // heartTypeのTap数を取得
     public final int countHeart(final String heartType) {
         try {
-            String columns[] = new String[] { "Time", "HeartType" };
+            String[] columns = new String[] { "Time", "HeartType" };
             String where = "HeartType=?";
             Cursor cursor = db.query("HeartLog", columns, where,
                     new String[] { heartType }, null, null, null);

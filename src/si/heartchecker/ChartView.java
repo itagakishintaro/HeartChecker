@@ -11,8 +11,10 @@ import android.view.View;
 
 @SuppressLint("DrawAllocation")
 public class ChartView extends View {
-
     private AFreeChart chart;
+
+    static final double RECT_SHAPE_WIDTH = 450.0;
+    static final double RECT_SHAPE_HEIGHT = 450.0;
 
     public ChartView(final Context context, final AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -21,7 +23,8 @@ public class ChartView extends View {
     @Override
     protected final void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
-        RectShape chartArea = new RectShape(0.0, 0.0, 450.0, 450.0);
+        RectShape chartArea = new RectShape(0.0, 0.0, RECT_SHAPE_WIDTH,
+                RECT_SHAPE_HEIGHT);
         this.chart.draw(canvas, chartArea);
     }
 
